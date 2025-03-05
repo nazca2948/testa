@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MarkdownTester</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/4.0.16/marked.min.js"></script>
+    
+    <!-- MathJax の設定 -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']], // `$...$` と `\( ... \)` を数式として認識
+                //displayMath: [['$$', '$$'], ['\\[', '\\]']] // `$$...$$` も対応
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    
+    <!-- MathJax の読み込み -->
+    <script type="text/javascript" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+
+    <style>
+        body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
+        .container {
+            display: flex;
+            width: 100vw;
+            position: absolute;
+            top: 10vh;
+            bottom: 10vh;
+            left: 0;
+            right: 0;
+        }
+        textarea, #preview {
+            width: 50%;
+            height: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+            overflow: auto;
+        }
+        /* 入力欄（折り返しを許可） */
+        textarea {
+            resize: none;
+            white-space: pre-wrap; /* 自動折り返し */
+            word-wrap: break-word;
+        }
+        /* プレビュー欄（横スクロール可能に） */
+        #preview {
+            white-space: nowrap; /* 折り返し禁止 */
+            overflow-x: auto; /* 横スクロール */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <textarea id="editor" placeholder="ここにMarkdownを入力"></textarea>
+        <div id="preview"></div>
+    </div>
+
+    <script>
+        document.getElementById('editor').addEventListener('input', function() {
+            let markdownText = this.value;
+            document.getElementById('preview').innerHTML = marked.parse(markdownText);
+            MathJax.typesetPromise();  // 数式をレンダリング
+        });
+    </script>
+</body>
+</html>
